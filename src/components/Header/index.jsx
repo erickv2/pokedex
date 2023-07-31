@@ -3,11 +3,10 @@ import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
+import { useNavigate } from 'react-router-dom';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -51,7 +50,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Header({ pokemonFilter }) {
+export default function Header({ pokemonFilter, hideSearch }) {
+
+  const navigate = useNavigate()
+
   return (
     <Box sx={{ flexGrow: 1, marginBottom: "2em" }}>
       <AppBar position="static" sx={{backgroundColor: "black"}}>
@@ -63,9 +65,10 @@ export default function Header({ pokemonFilter }) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <Box component="img" src="/assets/pokemon-logo-1-1.png" height="3em" />
+            <Box component="img" src="/assets/pokemon-logo-1-1.png" height="3em" sx={{cursor: "pointer"}} onClick={() => navigate("/")} />
           </Typography>
-          <Search onChange={(e) => pokemonFilter(e.target.value)}>
+          {!hideSearch && (
+            <Search onChange={(e) => pokemonFilter(e.target.value)}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -74,6 +77,7 @@ export default function Header({ pokemonFilter }) {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
+          )}
         </Toolbar>
       </AppBar>
     </Box>
