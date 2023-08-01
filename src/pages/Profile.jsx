@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../components/Header";
-import { Container, Typography, Box, Paper } from "@mui/material";
+import { Container, Typography, Box, Paper, Divider } from "@mui/material";
 import PokemonTable from "../components/PokemonTable";
 
 export const Profile = ({ pokemonData }) => {
@@ -11,10 +11,16 @@ export const Profile = ({ pokemonData }) => {
       <Header hideSearch />
       <Container maxWidth="md">
         <Paper elevation={3}>
-          <Box display="flex" justifyContent="center">
+          <Box display="flex" flexDirection="column" alignItems="center" padding={5}>
             <Typography variant="h5">{name}</Typography>
-            <Box component="img" src={sprites.front_default} width="50%" />
-            <PokemonTable />
+            <Box display="flex" margin={10} width="100%">
+              <Box component="img" src={sprites.front_default} width="100%" height="100%"/>
+              <PokemonTable pokemonData={pokemonData} />
+            </Box>
+            <Box width="100%">
+              <Divider>Variações</Divider>
+              <Box component="img" src={sprites.front_default} width="100%" height="100%"/>
+            </Box>
           </Box>
         </Paper>
       </Container>
