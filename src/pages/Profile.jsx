@@ -1,11 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/Header";
 import { Container, Typography, Box, Paper, Divider, Chip } from "@mui/material";
 import PokemonTable from "../components/PokemonTable";
+import { useNavigate } from 'react-router-dom';
 
 export const Profile = ({ pokemonData }) => {
-  const { name, sprites, moves } = pokemonData;
-  console.log(pokemonData);
+  const { name, sprites, moves } = pokemonData || {};
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!pokemonData) {
+      navigate("/")
+    }
+  })
+
+  if(!pokemonData) {
+    return null
+  }
+
+
   return (
     <>
       <Header hideSearch />

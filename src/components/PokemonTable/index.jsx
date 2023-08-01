@@ -11,7 +11,7 @@ import {typeHandler} from '../../utils'
 export default function PokemonTable({pokemonData}) {
     const {height, weight, types} = pokemonData
   return (
-    <TableContainer component={Paper} sx={{height:"fit-content", boxShadow: null}}>
+    <TableContainer component={Paper} sx={{height:"fit-content", boxShadow: null    }}>
       <Table aria-label="a dense table" >
         {/* <TableHead>
           <TableRow>
