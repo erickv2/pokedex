@@ -5,9 +5,12 @@ import Header from "../components/Header";
 import { Box, Grid } from "@mui/material";
 import axios from "axios";
 import Skeletons from "../components/Skeletons";
+import { useNavigate } from "react-router-dom";
 
 export const Home = ({setPokemonData}) => {
   const [pokemons, setPokemons] = useState([]);
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     getPokemons();
@@ -38,9 +41,13 @@ export const Home = ({setPokemonData}) => {
       }
     }
 
-    console.log(filteredPokemons);
     setPokemons(filteredPokemons);
   };
+
+  const pokemonPickHandler = (pokemonData) => {
+    setPokemonData(pokemonData)
+    navigate("/profile")
+  }
 
   return (
     <>
@@ -52,7 +59,7 @@ export const Home = ({setPokemonData}) => {
           ) : (
             pokemons.map((pokemon, key) => (
               <Grid item xs={12} sm={6} md={2} key={key}>
-                <Box onClick={() => setPokemonData(pokemon.data)}>
+                <Box onClick={() => pokemonPickHandler(pokemon.data)}>
                 <PokemonCard
                   name={pokemon.data.name}
                   image={pokemon.data.sprites.front_default}
