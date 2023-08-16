@@ -6,20 +6,25 @@ import { Box, Grid } from "@mui/material";
 import axios from "axios";
 import Skeletons from "../components/Skeletons";
 import { useNavigate } from "react-router-dom";
+import { PaginationComponent } from "../components/PaginationComponent";
+import { PaginationSelector } from "../components/PaginationSelector";
 
 export const Home = ({setPokemonData}) => {
   const [pokemons, setPokemons] = useState([]);
+  const [pokemonsPerPage, setPokemonsPerPage] = useState(20)
+  const [currentPage, setCurrentPage] = useState(0)
+
+  const pages = Math.ceil(pokemons.length / pokemonsPerPage)
+  const startIndex = currentPage * pokemonsPerPage
+  const endIndex = startIndex + pokemonsPerPage
+  const currentPokemons = pokemons.slice(startIndex, endIndex)
 
   const navigate = useNavigate()
-
-  useEffect(() => {
-    getPokemons();
-  }, []);
 
   const getPokemons = () => {
     var endpoints = [];
 
-    for (var i = 1; i < 50; i++) {
+    for (var i = 1; i < 500; i++) {
       endpoints.push(`https://pokeapi.co/api/v2/pokemon/${i}`);
     }
 
@@ -49,15 +54,24 @@ export const Home = ({setPokemonData}) => {
     navigate("/profile")
   }
 
+  useEffect(() => {
+    getPokemons();
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(0)
+  }, [pokemonsPerPage])
+
   return (
     <>
       <Header pokemonFilter={pokemonFilter} />
+
       <Container maxWidth="false">
         <Grid container spacing={5}>
           {pokemons.length === 0 ? (
             <Skeletons />
           ) : (
-            pokemons.map((pokemon, key) => (
+            currentPokemons.map((pokemon, key) => (
               <Grid item xs={12} sm={6} md={2} key={key}>
                 <Box onClick={() => pokemonPickHandler(pokemon.data)}>
                 <PokemonCard
@@ -70,6 +84,10 @@ export const Home = ({setPokemonData}) => {
             ))
           )}
         </Grid>
+        
+        <PaginationSelector pokemonsPerPage={pokemonsPerPage} setPokemonsPerPage={setPokemonsPerPage} />
+        <PaginationComponent pages={pages} setCurrentPage={setCurrentPage} />
+
       </Container>
     </>
   );
